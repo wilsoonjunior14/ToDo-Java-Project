@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+ 
+     <h:head>
+ 
+     </h:head>
+ 
+     <h:body>
+ 		<h:form>
+ 			<p:inputText value="#{homeBean.todo.task}" placeholder="What needs to be done"/>
+ 			<h:commandButton value="Save" actionListener="#{homeBean.save}"></h:commandButton>
+ 			
+ 			<p:dataTable id="todo-table" var="todo" value="#{homeBean.todoList}" paginator="true" paginatorPosition="bottom" emptyMessage="">
+ 				
+ 				<p:column>
+ 					<p:selectBooleanCheckbox value="#{todo.completed}">
+ 						<p:ajax listener="#{homeBean.update(todo)}" event="change" process="@this" immediate="true" />
+ 					</p:selectBooleanCheckbox>
+ 				</p:column>
+ 				
+ 				<p:column>
+ 					<p:outputLabel value="#{todo.task}"></p:outputLabel>
+ 				</p:column>
+ 				
+ 				<p:column>
+ 					<p:commandButton title="Delete this item" 
+ 					action="#{homeBean.delete(todo)}" icon="ui-icon ui-icon-trash" process="@this" update="todo-table"></p:commandButton>
+ 				</p:column>
+ 				
+ 				<f:facet name="footer">
+ 					
+ 					<h:commandLink style="margin-left: 10px; margin-right: 10px"
+ 					actionListener="#{homeBean.updateTodoList}" process="@this" update="todo-table"
+ 					value="All" />
+ 					
+ 					<h:commandLink style="margin-left: 10px; margin-right: 10px"
+ 					actionListener="#{homeBean.getOnlyCompleted}" process="@this" update="todo-table"
+ 					value="Completed" />
+ 					
+ 					<h:commandLink style="margin-left: 10px; margin-right: 10px"
+ 					 actionListener="#{homeBean.clearAllCompleted}" process="@this" update="todo-table"
+ 					 value="Clear all completed" />
+ 					
+ 				</f:facet>
+ 			</p:dataTable>
+ 		</h:form>
+     </h:body>
+</html>
